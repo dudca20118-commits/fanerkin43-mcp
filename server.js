@@ -24,9 +24,6 @@ const out=d=>({content:[{type:"text",text:JSON.stringify(d,null,2)}]});
 function makeServer(){
  const s=new McpServer({name:"fanerkin43-insales",version:"1.0.0"});
  s.tool("insales_get","Read an InSales JSON API endpoint.",{path:z.string()},async({path})=>out(await api(path)));
- s.tool("insales_put","Update an InSales JSON API endpoint only when the user explicitly requests a change.",{path:z.string(),body:z.record(z.any())},async({path,body})=>out(await api(path,"PUT",body)));
- s.tool("insales_post","Create through an InSales JSON API endpoint only when explicitly requested.",{path:z.string(),body:z.record(z.any())},async({path,body})=>out(await api(path,"POST",body)));
- s.tool("insales_delete","Delete through an InSales JSON API endpoint only when explicitly requested.",{path:z.string()},async({path})=>out(await api(path,"DELETE")));
  return s;
 }
 const transports=new Map();
