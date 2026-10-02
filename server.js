@@ -22,9 +22,35 @@ async function api(path,method="GET",body){
 const out=d=>({content:[{type:"text",text:JSON.stringify(d,null,2)}]});
 
 function makeServer(){
- const s=new McpServer({name:"fanerkin43-insales",version:"1.0.0"});
- s.tool("insales_get","Read an InSales JSON API endpoint.",{path:z.string()},async({path})=>out(await api(path)));
- return s;
+  const s=new McpServer({name:"fanerkin43-insales",version:"1.0.0"});
+
+  s.tool(
+    "insales_get",
+    "Read an InSales JSON API endpoint.",
+    {path:z.string()},
+    async({path})=>out(await api(path))
+  );
+
+  s.tool(
+    "insales_theme_asset_put",
+    "Update only an existing file inside the published InSales theme.",
+    {
+      asset_id:z.number().int().positive(),
+      body:z.record(z.any())
+    },
+    async({asset_id,body})=>{
+      const THEME_ID=11597033;
+      return out(
+        await api(
+          `/admin/themes/${THEME_ID}/assets/${asset_id}.json`,
+          "PUT",
+          body
+        )
+      );
+    }
+  );
+
+  return s;
 }
 const transports=new Map();
 app.get("/",(_q,r)=>r.json({ok:true,service:"fanerkin43-mcp",mcp:"/mcp"}));
