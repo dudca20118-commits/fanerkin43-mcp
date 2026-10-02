@@ -6,9 +6,9 @@ import { z } from "zod";
 
 const app=express(); app.use(express.json({limit:"10mb"}));
 const PORT=Number(process.env.PORT||8080);
-const SHOP=(process.env.INSALES_SHOP||"").replace(/^https?:\/\//,"").replace(/\/+$/,"");
-const LOGIN=process.env.INSALES_LOGIN||"";
-const PASSWORD=process.env.INSALES_PASSWORD||"";
+const SHOP=(process.env.INSALES_SHOP||"").trim().replace(/^https?:\/\//,"").replace(/\/+$/,"");
+const LOGIN=(process.env.INSALES_LOGIN||"").trim();
+const PASSWORD=(process.env.INSALES_PASSWORD||"").trim();
 
 async function api(path,method="GET",body){
  if(!SHOP||!LOGIN||!PASSWORD) throw new Error("InSales environment variables are not configured.");
